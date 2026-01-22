@@ -1038,7 +1038,7 @@
                 console.log('Checkout data:', checkoutData);
 
                 // Send to backend for Stripe checkout
-                const backendURL = 'https://quickshop-backend.onrender.com'; // Will be updated with your Render URL
+                const backendURL = 'https://your-render-backend-url.onrender.com'; // Replace with your actual Render URL
 
                 const response = await fetch(`${backendURL}/api/create-checkout-session`, {
                     method: 'POST',
