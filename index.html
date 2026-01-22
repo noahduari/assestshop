@@ -72,16 +72,301 @@
         .item-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
             height: 100%;
+            overflow: hidden;
+            position: relative;
         }
-        .item-card:hover { border-color: var(--electric-blue); transform: translateY(-5px); }
+
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.1), transparent);
+            transition: left 0.5s;
+            z-index: 1;
+        }
+
+        .item-card:hover::before {
+            left: 100%;
+        }
+
+        .item-card:hover {
+            border-color: var(--electric-blue);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.3);
+        }
+
+        .item-card img {
+            transition: transform 0.4s ease;
+        }
+
+        .item-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .item-card .p-4 {
+            position: relative;
+            z-index: 2;
+        }
+
+        .item-card h6 {
+            transition: color 0.3s ease;
+        }
+
+        .item-card:hover h6 {
+            color: var(--electric-blue);
+        }
+
+        .btn-black {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-black::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-black:hover::before {
+            left: 100%;
+        }
 
         .btn-black {
             background: white; color: black; border: none; width: 100%; padding: 12px;
             font-weight: 700; text-transform: uppercase; font-size: 0.75rem; transition: 0.3s;
         }
-        .btn-black:hover { background: var(--electric-blue); color: black; }
+        .btn-black:hover {
+            background: var(--electric-blue);
+            color: black;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.4);
+        }
+
+        /* Pulse animation for cart button */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse-animation {
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .item-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .btn-black:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .item-card:active {
+                transform: scale(0.98);
+                transition: transform 0.1s ease;
+            }
+
+            .btn-black:active {
+                transform: scale(0.95);
+                transition: transform 0.1s ease;
+            }
+        }
+
+        /* Better mobile scrolling */
+        body {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Improved mobile modal */
+        @media (max-width: 768px) {
+            .modal-dialog {
+                max-width: none;
+                margin: 0;
+                height: 100vh;
+                max-height: none;
+            }
+
+            .modal-content {
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .modal-body {
+                max-height: calc(100vh - 140px);
+                overflow-y: auto;
+            }
+        }
+
+        /* Triangle Burger Menu */
+        .triangle-menu {
+            display: none;
+            position: relative;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1051;
+        }
+
+        .triangle-menu span {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 10px solid var(--electric-blue);
+            top: 0;
+            left: 9px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .triangle-menu.active span {
+            border-bottom-color: white;
+            transform: rotate(180deg) translateY(-2px);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 90px;
+            left: -100%;
+            width: 280px;
+            height: calc(100vh - 90px);
+            background: rgba(2, 5, 18, 0.95);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(0, 210, 255, 0.2);
+            transition: left 0.3s ease;
+            z-index: 1050;
+            padding: 2rem 0;
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu .nav-item-btn {
+            display: block;
+            padding: 1rem 2rem;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mobile-menu .nav-item-btn:hover {
+            color: var(--electric-blue);
+            background: rgba(0, 210, 255, 0.1);
+            border-left: 3px solid var(--electric-blue);
+        }
+
+        @media (max-width: 991px) {
+            .triangle-menu {
+                display: block;
+            }
+            .navbar .d-none.d-lg-flex {
+                display: none !important;
+            }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .display-3 {
+                font-size: 2.5rem;
+            }
+
+            .item-card {
+                margin-bottom: 1rem;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 1rem;
+            }
+
+            .cart-item .quantity-controls {
+                align-self: center;
+            }
+
+            .mobile-menu {
+                width: 100%;
+                padding: 1rem 0;
+            }
+
+            .mobile-menu .nav-item-btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.25rem;
+            }
+
+            .btn-black {
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .display-3 {
+                font-size: 2rem;
+            }
+
+            .item-card h6 {
+                font-size: 0.9rem;
+            }
+
+            .price-tag {
+                font-size: 0.8rem;
+            }
+
+            .mobile-menu {
+                top: 80px;
+                height: calc(100vh - 80px);
+            }
+
+            .navbar {
+                padding: 10px 0;
+            }
+
+            .triangle-menu {
+                width: 25px;
+                height: 25px;
+            }
+
+            .triangle-menu span {
+                border-left-width: 5px;
+                border-right-width: 5px;
+                border-bottom-width: 8px;
+                left: 7.5px;
+            }
+        }
 
         #region-badge {
             font-family: monospace; font-size: 0.7rem; letter-spacing: 1px;
@@ -113,6 +398,9 @@
                 <a class="navbar-brand ms-3 fw-bold text-white text-decoration-none" href="#" onclick="showView('about')">QUICKSHOP</a>
             </div>
             <div class="d-flex align-items-center gap-4">
+                <div class="triangle-menu" onclick="toggleMobileMenu()">
+                    <span></span>
+                </div>
                 <ul class="nav-custom d-none d-lg-flex">
                     <li><a class="nav-item-btn" onclick="showView('templates')">Templates</a></li>
                     <li><a class="nav-item-btn" onclick="showView('games')">Games</a></li>
@@ -129,6 +417,15 @@
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a class="nav-item-btn" onclick="showView('templates'); toggleMobileMenu();">Templates</a>
+        <a class="nav-item-btn" onclick="showView('games'); toggleMobileMenu();">Games</a>
+        <a class="nav-item-btn" onclick="showView('assets'); toggleMobileMenu();">Assets</a>
+        <a class="nav-item-btn" onclick="showView('contact'); toggleMobileMenu();">Contact</a>
+        <a class="nav-item-btn" onclick="showView('account'); toggleMobileMenu();">My Account</a>
+    </div>
 
     <div class="container mt-5 pb-5">
         <div id="view-about" class="view">
@@ -490,12 +787,14 @@
                     <h6 class="modal-title fw-bold">YOUR BAG</h6>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body" id="cart-items"></div>
+                <div class="modal-body" id="cart-items">
+                    <!-- Cart items will be populated here -->
+                </div>
                 <div class="modal-footer border-secondary flex-column">
                     <div class="d-flex justify-content-between w-100 mb-3 fw-bold">
                         <span>TOTAL</span> <span id="total-price">$0.00</span>
                     </div>
-                    <button class="btn btn-light w-100 rounded-0 py-3 fw-bold">CHECKOUT</button>
+                    <button class="btn btn-light w-100 rounded-0 py-3 fw-bold" onclick="initiateCheckout()">CHECKOUT</button>
                 </div>
             </div>
         </div>
@@ -597,10 +896,16 @@
         window.firebaseFunctions = { signInWithPopup, signOut, onAuthStateChanged, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, where, getDocs };
         console.log('Firebase globals exposed:', window.firebaseAuth ? 'Yes' : 'No');
 
+        // Initialize Stripe
+        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'); // Replace with your publishable key
+        window.stripe = stripe;
+
         // Initialize Firebase-dependent code after globals are set
         initializeAuth();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
         let cart = [];
         let currencySymbol = "$";
@@ -638,22 +943,156 @@
 
         function addToCart(name, usdPrice) {
             const localPrice = usdPrice * exchangeRate;
-            cart.push({ name, localPrice });
+
+            // Check if item already exists
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity = (existingItem.quantity || 1) + 1;
+            } else {
+                cart.push({ name, localPrice, quantity: 1 });
+            }
+
             updateCartUI();
             const toast = document.getElementById('cart-toast');
+            toast.innerText = 'ITEM ADDED TO BAG';
             toast.style.display = 'block';
             setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+            const toast = document.getElementById('cart-toast');
+            toast.innerText = 'ITEM REMOVED';
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        }
+
+        function updateQuantity(index, change) {
+            if (cart[index]) {
+                cart[index].quantity = (cart[index].quantity || 1) + change;
+                if (cart[index].quantity <= 0) {
+                    removeFromCart(index);
+                    return;
+                }
+                updateCartUI();
+            }
+        }
+
+        // Stripe Checkout Functions
+        async function initiateCheckout() {
+            if (!currentUser) {
+                alert('Please sign in to checkout');
+                return;
+            }
+
+            if (cart.length === 0) {
+                alert('Your cart is empty');
+                return;
+            }
+
+            try {
+                // Close cart modal
+                const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
+                cartModal.hide();
+
+                // Show loading
+                showToast('Preparing checkout...');
+
+                // Calculate total
+                let total = 0;
+                cart.forEach(item => {
+                    total += item.localPrice * (item.quantity || 1);
+                });
+
+                // Create checkout session data
+                const checkoutData = {
+                    items: cart.map(item => ({
+                        name: item.name,
+                        price: item.localPrice,
+                        quantity: item.quantity || 1,
+                        currency: currencySymbol === '£' ? 'gbp' : currencySymbol === '€' ? 'eur' : 'usd'
+                    })),
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    total: total,
+                    currency: currencySymbol === '£' ? 'gbp' : currencySymbol === '€' ? 'eur' : 'usd'
+                };
+
+                // For client-side only, we'll simulate the checkout process
+                // In production, you'd send this to your backend
+                console.log('Checkout data:', checkoutData);
+
+                // Simulate Stripe checkout redirect
+                alert(`Checkout initiated!\n\nTotal: ${currencySymbol}${total.toFixed(2)}\nItems: ${cart.length}\n\nIn production, this would redirect to Stripe Checkout.`);
+
+                // Clear cart after successful checkout simulation
+                cart = [];
+                updateCartUI();
+                showToast('Order placed successfully!');
+
+            } catch (error) {
+                console.error('Checkout error:', error);
+                showToast('Checkout failed. Please try again.');
+            }
+        }
+
+        // Function to integrate with real Stripe backend
+        async function createStripeCheckoutSession(checkoutData) {
+            // This would be your backend API call
+            const response = await fetch('/api/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(checkoutData)
+            });
+
+            const session = await response.json();
+
+            // Redirect to Stripe Checkout
+            const result = await window.stripe.redirectToCheckout({
+                sessionId: session.id
+            });
+
+            if (result.error) {
+                alert(result.error.message);
+            }
         }
 
         function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.length;
             const container = document.getElementById('cart-items');
             let html = ""; let total = 0;
-            cart.forEach(item => {
-                html += `<div class="d-flex justify-content-between mb-2 small"><span>${item.name}</span><span>${currencySymbol}${item.localPrice.toFixed(2)}</span></div>`;
-                total += item.localPrice;
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p class='text-center opacity-50 py-4'>Your cart is empty</p>";
+                document.getElementById('total-price').innerText = currencySymbol + "0.00";
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                html += `
+                    <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-3 border border-secondary rounded">
+                        <div class="flex-grow-1">
+                            <div class="fw-bold small">${item.name}</div>
+                            <div class="text-info">${currencySymbol}${item.localPrice.toFixed(2)}</div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="quantity-controls d-flex align-items-center">
+                                <button class="btn btn-sm btn-outline-secondary px-2" onclick="updateQuantity(${index}, -1)">-</button>
+                                <span class="mx-2 fw-bold">${item.quantity || 1}</span>
+                                <button class="btn btn-sm btn-outline-secondary px-2" onclick="updateQuantity(${index}, 1)">+</button>
+                            </div>
+                            <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${index})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>`;
+                total += item.localPrice * (item.quantity || 1);
             });
-            container.innerHTML = html || "<p class='text-center opacity-50 py-4'>Empty</p>";
+
+            container.innerHTML = html;
             document.getElementById('total-price').innerText = currencySymbol + total.toFixed(2);
         }
 
@@ -748,6 +1187,14 @@
             document.getElementById('login-form').classList.add('d-none');
             document.getElementById('signup-form').classList.remove('d-none');
             document.getElementById('authModalTitle').innerText = 'SIGN UP';
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const burger = document.querySelector('.triangle-menu');
+
+            menu.classList.toggle('active');
+            burger.classList.toggle('active');
         }
 
         async function handleLogout() {
