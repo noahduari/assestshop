@@ -4,9 +4,10 @@
   "description": "A premium digital marketplace for games, templates, and assets",
   "main": "index.html",
   "scripts": {
-    "dev": "serve .",
+    "dev": "serve . -p 3000",
     "build": "echo 'No build step required'",
-    "start": "serve ."
+    "start": "serve . -p 3000",
+    "test": "echo 'Open index.html in browser to test'"
   },
   "keywords": ["marketplace", "games", "templates", "assets", "digital"],
   "author": "Your Name",

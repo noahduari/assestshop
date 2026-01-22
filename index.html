@@ -213,32 +213,47 @@
             }
         }
 
-        /* Triangle Burger Menu */
-        .triangle-menu {
+        /* Cool Animated Burger Menu */
+        .burger-menu {
             display: none;
             position: relative;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 24px;
             cursor: pointer;
             z-index: 1051;
         }
 
-        .triangle-menu span {
+        .burger-menu span {
             position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-bottom: 10px solid var(--electric-blue);
-            top: 0;
-            left: 9px;
-            transition: all 0.3s ease;
+            width: 100%;
+            height: 3px;
+            background: var(--electric-blue);
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             transform-origin: center;
         }
 
-        .triangle-menu.active span {
-            border-bottom-color: white;
-            transform: rotate(180deg) translateY(-2px);
+        .burger-menu span:nth-child(1) { top: 0; }
+        .burger-menu span:nth-child(2) {
+            top: 10px;
+            width: 80%;
+            left: 20%;
+        }
+        .burger-menu span:nth-child(3) { top: 20px; }
+
+        .burger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+            background: white;
+        }
+
+        .burger-menu.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        .burger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+            background: white;
         }
 
         .mobile-menu {
@@ -276,7 +291,7 @@
         }
 
         @media (max-width: 991px) {
-            .triangle-menu {
+            .burger-menu {
                 display: block;
             }
             .navbar .d-none.d-lg-flex {
@@ -355,16 +370,13 @@
                 padding: 10px 0;
             }
 
-            .triangle-menu {
-                width: 25px;
-                height: 25px;
+            .burger-menu {
+                width: 28px;
+                height: 20px;
             }
 
-            .triangle-menu span {
-                border-left-width: 5px;
-                border-right-width: 5px;
-                border-bottom-width: 8px;
-                left: 7.5px;
+            .burger-menu span {
+                height: 2px;
             }
         }
 
@@ -398,7 +410,9 @@
                 <a class="navbar-brand ms-3 fw-bold text-white text-decoration-none" href="#" onclick="showView('about')">QUICKSHOP</a>
             </div>
             <div class="d-flex align-items-center gap-4">
-                <div class="triangle-menu" onclick="toggleMobileMenu()">
+                <div class="burger-menu" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
                     <span></span>
                 </div>
                 <ul class="nav-custom d-none d-lg-flex">
@@ -897,7 +911,7 @@
         console.log('Firebase globals exposed:', window.firebaseAuth ? 'Yes' : 'No');
 
         // Initialize Stripe
-        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'); // Replace with your publishable key
+        const stripe = Stripe('pk_live_51SDVAdFjcqPI4sm8cfwnTPEgT5IEPOCRAs8WSvr5Vl2weBxeViST0nFHNZHqBHupr4Dp3H4i5II7mDdmcdsWbajo002MbNqBQK'); // Your publishable key
         window.stripe = stripe;
 
         // Initialize Firebase-dependent code after globals are set
@@ -1191,7 +1205,7 @@
 
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
-            const burger = document.querySelector('.triangle-menu');
+            const burger = document.querySelector('.burger-menu');
 
             menu.classList.toggle('active');
             burger.classList.toggle('active');
