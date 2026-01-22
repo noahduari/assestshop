@@ -1037,13 +1037,37 @@
                 // In production, you'd send this to your backend
                 console.log('Checkout data:', checkoutData);
 
-                // Simulate Stripe checkout redirect
-                alert(`Checkout initiated!\n\nTotal: ${currencySymbol}${total.toFixed(2)}\nItems: ${cart.length}\n\nIn production, this would redirect to Stripe Checkout.`);
+                // Send to backend for Stripe checkout
+                const backendURL = 'https://quickshop-backend.onrender.com'; // Will be updated with your Render URL
 
-                // Clear cart after successful checkout simulation
-                cart = [];
-                updateCartUI();
-                showToast('Order placed successfully!');
+                const response = await fetch(`${backendURL}/api/create-checkout-session`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(checkoutData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Backend error: ${response.status}`);
+                }
+
+                const sessionData = await response.json();
+
+                // Redirect to Stripe Checkout
+                const result = await window.stripe.redirectToCheckout({
+                    sessionId: sessionData.sessionId
+                });
+
+                if (result.error) {
+                    console.error('Stripe redirect error:', result.error);
+                    showToast('Checkout failed: ' + result.error.message);
+                } else {
+                    // Clear cart after successful redirect
+                    cart = [];
+                    updateCartUI();
+                    showToast('Redirecting to checkout...');
+                }
 
             } catch (error) {
                 console.error('Checkout error:', error);
