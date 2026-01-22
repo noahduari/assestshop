@@ -1,0 +1,17 @@
+{
+  "name": "quickshop-marketplace",
+  "version": "1.0.0",
+  "description": "A premium digital marketplace for games, templates, and assets",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve .",
+    "build": "echo 'No build step required'",
+    "start": "serve ."
+  },
+  "keywords": ["marketplace", "games", "templates", "assets", "digital"],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
