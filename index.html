@@ -439,6 +439,11 @@
         <a class="nav-item-btn" onclick="showView('assets'); toggleMobileMenu();">Assets</a>
         <a class="nav-item-btn" onclick="showView('contact'); toggleMobileMenu();">Contact</a>
         <a class="nav-item-btn" onclick="showView('account'); toggleMobileMenu();">My Account</a>
+        <div id="mobile-admin-link" style="display: none;">
+            <a class="nav-item-btn text-danger" onclick="showAdminPanel(); toggleMobileMenu();">
+                <i class="bi bi-shield-lock me-2"></i>Admin Panel
+            </a>
+        </div>
     </div>
 
     <div class="container mt-5 pb-5">
@@ -744,7 +749,7 @@
 
             <div class="mt-5 pt-5 border-top border-secondary">
                 <h4 class="fw-bold mb-4 text-uppercase">Account Settings</h4>
-                <div class="row g-4">
+                <div class="row g-4" id="account-settings">
                     <div class="col-md-6">
                         <div class="item-card p-4">
                             <h5 class="fw-bold mb-3">Notification Preferences</h5>
@@ -773,6 +778,94 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="view-admin" class="view hidden">
+            <h2 class="fw-bold mb-5 text-uppercase text-danger">🔧 Admin Dashboard</h2>
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <div class="item-card p-4 text-center border-danger">
+                        <div class="mb-3">
+                            <i class="bi bi-graph-up text-danger fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold">Analytics</h5>
+                        <p class="small opacity-75">View sales data & metrics</p>
+                        <button class="btn btn-outline-danger btn-sm w-100" onclick="showAnalytics()">
+                            View Analytics
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="item-card p-4 text-center border-warning">
+                        <div class="mb-3">
+                            <i class="bi bi-receipt text-warning fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold">Orders</h5>
+                        <p class="small opacity-75">Manage customer orders</p>
+                        <button class="btn btn-outline-warning btn-sm w-100" onclick="showOrders()">
+                            Manage Orders
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="item-card p-4 text-center border-success">
+                        <div class="mb-3">
+                            <i class="bi bi-box-seam text-success fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold">Products</h5>
+                        <p class="small opacity-75">Add/edit marketplace items</p>
+                        <button class="btn btn-outline-success btn-sm w-100" onclick="showProducts()">
+                            Manage Products
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="item-card p-4 text-center border-info">
+                        <div class="mb-3">
+                            <i class="bi bi-people text-info fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold">Users</h5>
+                        <p class="small opacity-75">Manage user accounts</p>
+                        <button class="btn btn-outline-info btn-sm w-100" onclick="showUsers()">
+                            Manage Users
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <div class="item-card p-4">
+                    <h4 class="fw-bold mb-4 text-danger">⚡ Quick Actions</h4>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <button class="btn btn-danger w-100" onclick="clearAllCarts()">
+                                <i class="bi bi-cart-x me-2"></i>Clear All Carts
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-warning w-100" onclick="exportData()">
+                                <i class="bi bi-download me-2"></i>Export Data
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-success w-100" onclick="backupDatabase()">
+                                <i class="bi bi-cloud-upload me-2"></i>Backup DB
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-info w-100" onclick="showLogs()">
+                                <i class="bi bi-journal-text me-2"></i>View Logs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button class="btn btn-outline-light" onclick="showView('account')">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Account
+                </button>
             </div>
         </div>
 
@@ -1286,21 +1379,37 @@
                     document.getElementById('account-email').innerText = userData.email;
                 }
 
-                // Load order history (placeholder for now)
+                // Load order history (will be populated from Firebase later)
                 document.getElementById('order-history').innerHTML = `
-                    <div class="border border-secondary rounded p-3 mb-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-1">Order #12345</h6>
-                                <small class="opacity-75">Dec 15, 2024</small>
-                            </div>
-                            <div class="text-end">
-                                <div class="text-info fw-bold">$25.00</div>
-                                <small class="opacity-75">Completed</small>
+                    <p class="text-center opacity-50 py-4">No orders yet</p>
+                `;
+
+                // Check if user is admin
+                const adminEmails = ['codextosin@gmail.com', 'noahduaripro@gmail.com'];
+                const isAdmin = adminEmails.includes(currentUser.email);
+
+                // Show/hide admin links
+                const mobileAdminLink = document.getElementById('mobile-admin-link');
+                if (mobileAdminLink) {
+                    mobileAdminLink.style.display = isAdmin ? 'block' : 'none';
+                }
+
+                if (isAdmin) {
+                    // Add admin panel to account settings
+                    document.getElementById('account-settings').innerHTML += `
+                        <div class="col-md-6 mt-4">
+                            <div class="item-card p-4 border-danger">
+                                <h5 class="fw-bold mb-3 text-danger">🔧 Admin Panel</h5>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-danger btn-sm" onclick="showAdminPanel()">
+                                        <i class="bi bi-shield-lock me-2"></i>Access Admin Dashboard
+                                    </button>
+                                    <small class="text-muted">Manage products, orders, and users</small>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                }
 
                 // Update current region display
                 const regionBadge = document.getElementById('region-badge');
@@ -1335,6 +1444,50 @@
                     }
                 };
             }
+        }
+
+        // Admin Panel Functions
+        function showAdminPanel() {
+            const adminEmails = ['codextosin@gmail.com', 'noahduaripro@gmail.com'];
+            if (!currentUser || !adminEmails.includes(currentUser.email)) {
+                showToast('Access denied');
+                return;
+            }
+            showView('admin');
+        }
+
+        function showAnalytics() {
+            showToast('Analytics feature coming soon');
+        }
+
+        function showOrders() {
+            showToast('Order management coming soon');
+        }
+
+        function showProducts() {
+            showToast('Product management coming soon');
+        }
+
+        function showUsers() {
+            showToast('User management coming soon');
+        }
+
+        function clearAllCarts() {
+            if (confirm('Are you sure you want to clear all user carts? This cannot be undone.')) {
+                showToast('All carts cleared (simulated)');
+            }
+        }
+
+        function exportData() {
+            showToast('Data export feature coming soon');
+        }
+
+        function backupDatabase() {
+            showToast('Database backup initiated (simulated)');
+        }
+
+        function showLogs() {
+            showToast('Server logs feature coming soon');
         }
     </script>
 </body>
