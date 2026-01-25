@@ -165,6 +165,16 @@
             animation: pulse 0.6s ease-in-out;
         }
 
+        .item-card.no-hover-effect:hover {
+            transform: none !important;
+            box-shadow: none !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .item-card.no-hover-effect:hover img {
+            transform: none !important;
+        }
+
         /* Product Image Effects */
         .product-image-container {
             position: relative;
@@ -829,98 +839,104 @@
         </div>
 
         <div id="view-admin" class="view hidden">
-            <h2 class="fw-bold mb-5 text-uppercase text-danger">🔧 Admin Dashboard</h2>
-            <div class="row g-4">
-                <div class="col-lg-3">
-                    <div class="item-card p-4 text-center border-danger">
-                        <div class="mb-3">
-                            <i class="bi bi-graph-up text-danger fs-1"></i>
+            <div class="mb-5 pb-4 border-bottom border-secondary">
+                <h1 class="display-4 fw-bold text-danger mb-2">🔧 Admin Dashboard</h1>
+                <p class="lead opacity-75">Manage your marketplace, products, and site settings</p>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="item-card p-5 text-center border-danger border-2 h-100">
+                        <div class="mb-4">
+                            <i class="bi bi-graph-up-arrow text-danger" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="fw-bold">Analytics</h5>
-                        <p class="small opacity-75">View sales data & metrics</p>
-                        <button class="btn btn-outline-danger btn-sm w-100" onclick="showAnalytics()">
-                            View Analytics
+                        <h4 class="fw-bold mb-3">Analytics</h4>
+                        <p class="mb-4 opacity-75">View sales data, revenue metrics, and user statistics</p>
+                        <button class="btn btn-outline-danger btn-lg w-100" onclick="showAnalytics()">
+                            <i class="bi bi-graph-up me-2"></i>View Analytics
                         </button>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="item-card p-4 text-center border-warning">
-                        <div class="mb-3">
-                            <i class="bi bi-receipt text-warning fs-1"></i>
+                <div class="col-lg-3 col-md-6">
+                    <div class="item-card p-5 text-center border-warning border-2 h-100">
+                        <div class="mb-4">
+                            <i class="bi bi-receipt-cutoff text-warning" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="fw-bold">Orders</h5>
-                        <p class="small opacity-75">Manage customer orders</p>
-                        <button class="btn btn-outline-warning btn-sm w-100" onclick="showOrders()">
-                            Manage Orders
+                        <h4 class="fw-bold mb-3">Orders</h4>
+                        <p class="mb-4 opacity-75">Manage customer orders, refunds, and transactions</p>
+                        <button class="btn btn-outline-warning btn-lg w-100" onclick="showOrders()">
+                            <i class="bi bi-receipt me-2"></i>Manage Orders
                         </button>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="item-card p-4 text-center border-success">
-                        <div class="mb-3">
-                            <i class="bi bi-box-seam text-success fs-1"></i>
+                <div class="col-lg-3 col-md-6">
+                    <div class="item-card p-5 text-center border-success border-2 h-100">
+                        <div class="mb-4">
+                            <i class="bi bi-box-seam text-success" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="fw-bold">Products</h5>
-                        <p class="small opacity-75">Add/edit marketplace items</p>
-                        <button class="btn btn-outline-success btn-sm w-100" onclick="showProducts()">
-                            Manage Products
+                        <h4 class="fw-bold mb-3">Products</h4>
+                        <p class="mb-4 opacity-75">Add, edit, and manage marketplace products</p>
+                        <button class="btn btn-outline-success btn-lg w-100" onclick="showProducts()">
+                            <i class="bi bi-box-seam me-2"></i>Manage Products
                         </button>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="item-card p-4 text-center border-info">
-                        <div class="mb-3">
-                            <i class="bi bi-people text-info fs-1"></i>
+                <div class="col-lg-3 col-md-6">
+                    <div class="item-card p-5 text-center border-info border-2 h-100">
+                        <div class="mb-4">
+                            <i class="bi bi-people-fill text-info" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="fw-bold">Users</h5>
-                        <p class="small opacity-75">Manage user accounts</p>
-                        <button class="btn btn-outline-info btn-sm w-100" onclick="showUsers()">
-                            Manage Users
+                        <h4 class="fw-bold mb-3">Users</h4>
+                        <p class="mb-4 opacity-75">Manage user accounts, permissions, and access</p>
+                        <button class="btn btn-outline-info btn-lg w-100" onclick="showUsers()">
+                            <i class="bi bi-people me-2"></i>Manage Users
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-5">
-                <div class="item-card p-4 border-warning">
-                    <h4 class="fw-bold mb-4 text-warning">🚧 Site Maintenance</h4>
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <button class="btn btn-warning w-100" onclick="toggleMaintenanceMode()">
-                                <i class="bi bi-tools me-2"></i>Toggle Maintenance Mode
-                            </button>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-8">
+                    <div class="item-card p-5 border-warning border-2">
+                        <div class="d-flex align-items-center mb-4">
+                            <i class="bi bi-tools text-warning me-3" style="font-size: 2.5rem;"></i>
+                            <div>
+                                <h3 class="fw-bold mb-1 text-warning">🚧 Site Maintenance</h3>
+                                <p class="small text-muted mb-0">Control site availability and maintenance windows</p>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-outline-warning w-100" onclick="showMaintenanceStatus()">
-                                <i class="bi bi-info-circle me-2"></i>Check Status
-                            </button>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <button class="btn btn-warning btn-lg w-100 py-3" onclick="toggleMaintenanceMode()">
+                                    <i class="bi bi-tools me-2"></i>Toggle Maintenance Mode
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-outline-warning btn-lg w-100 py-3" onclick="showMaintenanceStatus()">
+                                    <i class="bi bi-info-circle me-2"></i>Check Status
+                                </button>
+                            </div>
+                        </div>
+                        <div class="alert alert-warning mb-0">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <strong>Note:</strong> When maintenance mode is enabled, only admins can access the site. Regular users will see a professional maintenance page.
                         </div>
                     </div>
-                    <p class="small text-muted mb-0">When maintenance mode is enabled, only admins can access the site. Regular users will see a maintenance page.</p>
                 </div>
-            </div>
-
-            <div class="mt-4">
-                <div class="item-card p-4">
-                    <h4 class="fw-bold mb-4 text-danger">⚡ Quick Actions</h4>
-                    <div class="row g-3">
-                        <div class="col-md-3">
-                            <button class="btn btn-danger w-100" onclick="clearAllCarts()">
+                <div class="col-lg-4">
+                    <div class="item-card p-5 border-danger border-2 h-100">
+                        <h4 class="fw-bold mb-4 text-danger">⚡ Quick Actions</h4>
+                        <div class="d-grid gap-3">
+                            <button class="btn btn-danger btn-lg" onclick="clearAllCarts()">
                                 <i class="bi bi-cart-x me-2"></i>Clear All Carts
                             </button>
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-warning w-100" onclick="exportData()">
+                            <button class="btn btn-warning btn-lg" onclick="exportData()">
                                 <i class="bi bi-download me-2"></i>Export Data
                             </button>
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-success w-100" onclick="backupDatabase()">
-                                <i class="bi bi-cloud-upload me-2"></i>Backup DB
+                            <button class="btn btn-success btn-lg" onclick="backupDatabase()">
+                                <i class="bi bi-cloud-upload me-2"></i>Backup Database
                             </button>
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-info w-100" onclick="showLogs()">
+                            <button class="btn btn-info btn-lg" onclick="showLogs()">
                                 <i class="bi bi-journal-text me-2"></i>View Logs
                             </button>
                         </div>
@@ -928,8 +944,8 @@
                 </div>
             </div>
 
-            <div class="mt-4 text-center">
-                <button class="btn btn-outline-light" onclick="showView('account')">
+            <div class="mt-5 pt-4 text-center">
+                <button class="btn btn-outline-light btn-lg px-5" onclick="showView('account')">
                     <i class="bi bi-arrow-left me-2"></i>Back to Account
                 </button>
             </div>
@@ -1066,6 +1082,14 @@
                                     <label class="form-label">Base Price (USD)</label>
                                     <input type="number" class="form-control bg-transparent border-secondary text-white" id="productPrice" step="0.01" required>
                                 </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="productOutOfStock">
+                                        <label class="form-check-label" for="productOutOfStock">
+                                            Out of Stock
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -1075,6 +1099,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Secondary Image URL (Optional - for hover effect)</label>
                                     <input type="url" class="form-control bg-transparent border-secondary text-white" id="productImage2">
+                                    <small class="text-muted">Note: Items with 2 images will have hover effects disabled</small>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Description</label>
@@ -1609,6 +1634,7 @@
                 image1: document.getElementById('productImage1').value,
                 image2: document.getElementById('productImage2').value || null,
                 description: document.getElementById('productDescription').value,
+                outOfStock: document.getElementById('productOutOfStock').checked,
                 createdBy: currentUser.email,
                 createdAt: new Date()
             };
@@ -1616,6 +1642,9 @@
             try {
                 const productsRef = window.firebaseFunctions.collection(window.firebaseDb, 'products');
                 await window.firebaseFunctions.addDoc(productsRef, productData);
+
+                // Reload products
+                loadProductsFromFirebase();
 
                 // Close modal
                 const modal = bootstrap.Modal.getInstance(document.getElementById('productModal'));
@@ -1671,6 +1700,15 @@
         function showMaintenanceMode() {
             const overlay = document.getElementById('maintenance-overlay');
             overlay.classList.remove('d-none');
+            overlay.style.display = 'flex';
+
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.add('hidden');
+            });
+
+            // Hide navbar
+            document.querySelector('.navbar').style.display = 'none';
 
             // Show admin access button after 3 seconds
             setTimeout(() => {
@@ -1679,13 +1717,25 @@
             }, 3000);
         }
 
+        function hideMaintenanceMode() {
+            const overlay = document.getElementById('maintenance-overlay');
+            overlay.classList.add('d-none');
+            overlay.style.display = 'none';
+
+            // Show navbar
+            document.querySelector('.navbar').style.display = 'block';
+
+            // Show default view
+            showView('about');
+        }
+
         function showAdminLogin() {
             // Show admin login modal
             const adminEmails = ['codextosin@gmail.com', 'noahduaripro@gmail.com'];
             const adminPassword = prompt('Enter admin password:');
 
             if (adminPassword === 'admin123') { // Simple password for demo
-                document.getElementById('maintenance-overlay').classList.add('d-none');
+                hideMaintenanceMode();
                 showToast('Admin access granted');
             } else {
                 showToast('Invalid admin password');
@@ -1775,21 +1825,14 @@
             const containerId = `view-${category}`;
             const container = document.getElementById(containerId);
 
-            if (!container || products.length === 0) return;
+            if (!container) return;
 
             // Find the row with products
             const productRow = container.querySelector('.row.g-4');
             if (!productRow) return;
 
-            // Clear existing products except the first few (keep some as examples)
-            const existingCards = productRow.querySelectorAll('.col-md-4');
-            if (existingCards.length > 0) {
-                // Keep first 2-3 cards, replace the rest
-                const keepCount = Math.min(2, existingCards.length);
-                for (let i = keepCount; i < existingCards.length; i++) {
-                    existingCards[i].remove();
-                }
-            }
+            // Clear ALL existing products (replace with Firebase products)
+            productRow.innerHTML = '';
 
             // Add Firebase products
             products.forEach(product => {
@@ -1804,10 +1847,12 @@
 
             const localPrice = (product.price * exchangeRate).toFixed(2);
             const hasDualImage = product.image2 && product.image2.trim() !== '';
+            const isOutOfStock = product.outOfStock || false;
 
             colDiv.innerHTML = `
-                <div class="item-card">
+                <div class="item-card ${hasDualImage ? 'no-hover-effect' : ''}" ${isOutOfStock ? 'style="opacity: 0.6;"' : ''}>
                     <div class="product-image-container" style="position: relative; overflow: hidden;">
+                        ${isOutOfStock ? '<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75 d-flex align-items-center justify-content-center"><span class="badge bg-danger fs-6">OUT OF STOCK</span></div>' : ''}
                         <img src="${product.image1}" class="w-100 product-image primary-image"
                              style="transition: opacity 0.3s ease;"
                              onclick="showDetails('${product.name}', ${product.price}, '${product.image1}')">
@@ -1818,12 +1863,14 @@
                     <div class="p-4 text-center">
                         <h6 class="fw-bold mb-1">${product.name}</h6>
                         <p class="price-tag text-info small mb-3" data-usd="${product.price}">${currencySymbol}${localPrice}</p>
-                        <button class="btn-black" onclick="addToCart('${product.name}', ${product.price})">Add to Bag</button>
+                        <button class="btn-black" onclick="addToCart('${product.name}', ${product.price})" ${isOutOfStock ? 'disabled' : ''}>
+                            ${isOutOfStock ? 'OUT OF STOCK' : 'Add to Bag'}
+                        </button>
                     </div>
                 </div>
             `;
 
-            // Add hover effects for dual images
+            // Add hover effects for dual images (only image swap, no card hover)
             if (hasDualImage) {
                 const container = colDiv.querySelector('.product-image-container');
                 const primaryImg = colDiv.querySelector('.primary-image');
