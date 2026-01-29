@@ -165,10 +165,22 @@
             animation: pulse 0.6s ease-in-out;
         }
 
-        .item-card.no-hover-effect:hover {
+        .item-card.no-hover-effect {
+            /* Prevent any transform or shadow on normal state */
             transform: none !important;
             box-shadow: none !important;
-            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .item-card.no-hover-effect:hover {
+            /* Disable hover effects completely */
+            transform: none !important;
+            box-shadow: none !important;
+            border-color: rgba(255, 255, 255, 0.1) !important; /* Restore original border */
+        }
+
+        .item-card.no-hover-effect .product-image-container:hover .product-image {
+            /* Only allow image swap, not zoom */
+            transform: none !important;
         }
 
         .item-card.no-hover-effect:hover img {
@@ -1181,16 +1193,30 @@
             window.scrollTo(0, 0);
         }
 
-        function showDetails(name, price, imgSrc) {
-            document.getElementById('detail-title').innerText = name;
-            document.getElementById('detail-price').innerText = currencySymbol + (price * exchangeRate).toFixed(2);
-            document.getElementById('detail-img').src = imgSrc;
-            document.getElementById('detail-add-btn').onclick = () => addToCart(name, price);
+        function showDetails(product) {
+            document.getElementById('detail-title').innerText = product.name;
+            document.getElementById('detail-price').innerText = currencySymbol + (product.price * exchangeRate).toFixed(2);
+            document.getElementById('detail-img').src = product.image1;
+            
+            const detailAddBtn = document.getElementById('detail-add-btn');
+            if (product.outOfStock) {
+                detailAddBtn.innerText = 'OUT OF STOCK';
+                detailAddBtn.disabled = true;
+                detailAddBtn.classList.add('btn-outline-secondary');
+                detailAddBtn.classList.remove('btn-black');
+            } else {
+                detailAddBtn.innerText = 'ADD TO BAG';
+                detailAddBtn.disabled = false;
+                detailAddBtn.classList.add('btn-black');
+                detailAddBtn.classList.remove('btn-outline-secondary');
+                detailAddBtn.onclick = () => addToCart(product.name, product.price);
+            }
             
             const suggested = document.getElementById('suggested-items');
+            // Always show Pro Bundle
             suggested.innerHTML = `
                 <div class="col-md-3">
-                    <div class="item-card p-2" onclick="showDetails('Pro Bundle', 20.00, 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300')">
+                    <div class="item-card p-2" onclick="showDetails({ name: 'Pro Bundle', price: 20.00, image1: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300' })">
                         <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300" class="w-100 mb-2">
                         <p class="small mb-0 fw-bold">PRO BUNDLE</p>
                         <p class="text-info small">${currencySymbol}${(20 * exchangeRate).toFixed(2)}</p>
@@ -1790,6 +1816,24 @@
             }
         }
 
+        async function removeProduct(productId) {
+            if (!isCurrentUserAdmin()) {
+                showToast('Access denied');
+                return;
+            }
+            if (!confirm('Are you sure you want to remove this product?')) {
+                return;
+            }
+            try {
+                await window.firebaseFunctions.deleteDoc(window.firebaseFunctions.doc(window.firebaseDb, 'products', productId));
+                showToast('Product removed successfully!');
+                loadProductsFromFirebase(); // Reload products after removal
+            } catch (error) {
+                console.error('Error removing product:', error);
+                showToast('Failed to remove product');
+            }
+        }
+
         // Product Management Functions
         async function loadProductsFromFirebase() {
             try {
@@ -1855,17 +1899,18 @@
                         ${isOutOfStock ? '<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75 d-flex align-items-center justify-content-center"><span class="badge bg-danger fs-6">OUT OF STOCK</span></div>' : ''}
                         <img src="${product.image1}" class="w-100 product-image primary-image"
                              style="transition: opacity 0.3s ease;"
-                             onclick="showDetails('${product.name}', ${product.price}, '${product.image1}')">
+                             onclick="showDetails(product)">
                         ${hasDualImage ? `<img src="${product.image2}" class="w-100 product-image secondary-image"
                              style="position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.3s ease;"
-                             onclick="showDetails('${product.name}', ${product.price}, '${product.image1}')">` : ''}
+                             onclick="showDetails(product)">` : ''}
                     </div>
                     <div class="p-4 text-center">
                         <h6 class="fw-bold mb-1">${product.name}</h6>
                         <p class="price-tag text-info small mb-3" data-usd="${product.price}">${currencySymbol}${localPrice}</p>
-                        <button class="btn-black" onclick="addToCart('${product.name}', ${product.price})" ${isOutOfStock ? 'disabled' : ''}>
+                        <button class="btn-black mb-2" onclick="addToCart('${product.name}', ${product.price})" ${isOutOfStock ? 'disabled' : ''}>
                             ${isOutOfStock ? 'OUT OF STOCK' : 'Add to Bag'}
                         </button>
+                        ${isCurrentUserAdmin() ? `<button class="btn btn-sm btn-outline-danger w-100" onclick="removeProduct('${product.id}')"><i class="bi bi-trash me-2"></i>Remove</button>` : ''}
                     </div>
                 </div>
             `;
